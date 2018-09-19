@@ -1,3 +1,3 @@
 #! /bin/bash
 cd target
-java -jar target/arionum-miner-java.jar
+java -jar orderReader-1.0-SNAPSHOT.jar
