@@ -16,7 +16,7 @@ public class CSVParser {
     private DataValidation dataValidation = new DataValidation();
     private String type = "CSV";
 
-    public void parse(String url) {
+    public boolean parse(String url) {
         String[] columnOrder = new String[5];
         String[] orders;
         boolean firstLine = true;
@@ -42,12 +42,13 @@ public class CSVParser {
             }
             recordsAfter = OrderDb.orders.size();
             writeMessage();
+            return true;
         } catch (FileNotFoundException e) {
             System.err.println("System nie może odnaleźć określonej ścieżki");
-            System.exit(1);
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
+            return false;
         }
     }
 

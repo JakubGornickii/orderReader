@@ -16,10 +16,55 @@ class Main {
     private Boolean check;
 
     private void init() {
+        boolean next = true;
         CSVParser CSVParser = new CSVParser();
         XMLParser XMLParser = new XMLParser();
-        CSVParser.parse("orders.csv");
-        XMLParser.parse("orders.xml");
+        while (next) {
+            System.out.println("Wprowadz nazwę pliku");
+            String url = geturl();
+            String add = "../";
+            if (url.contains("csv")) {
+                if (url.contains("\\")) {
+                    if (CSVParser.parse(url)) {
+                        next = nextFile();
+                    }
+                } else {
+                    if (CSVParser.parse(add + url)) {
+                        next = nextFile();
+                    }
+
+                }
+
+                continue;
+            } else if (url.contains("xml")) {
+                if (url.contains("\\")) {
+                    if (XMLParser.parse(url)) {
+                        next = nextFile();
+                    }
+                } else {
+                    if (XMLParser.parse(add + url)) {
+                        next = nextFile();
+                    }
+                }
+            } else System.out.println("błędne rozszerzenie");
+        }
+    }
+
+    private boolean nextFile() {
+        while (true) {
+            System.out.println("Wczytać kolejny plik t/n");
+            String key = scanner.next();
+            if (key.equals("t"))
+                return true;
+            if (key.equals("n"))
+                return false;
+            if (!key.equals("t") || !key.equals("n"))
+                System.out.println("Błąd");
+        }
+    }
+
+    private String geturl() {
+        return scanner.next();
     }
 
     void run() {
@@ -83,7 +128,7 @@ class Main {
                         if (isEmpty(case6.size()))
                             break;
                         String data6 = "Lista wszystkich zamówień klienta " + id6;
-                        raports(data6,case6);
+                        raports(data6, case6);
                         break;
                     case 7:
                         Double case7 = orderDAO.findByAveragePrice();

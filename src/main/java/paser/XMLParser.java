@@ -24,7 +24,7 @@ public class XMLParser {
     private OrderDAO orderDAO = new OrderDAOimpl();
     private DataValidation dataValidation = new DataValidation();
 
-    public void parse(String url) {
+    public boolean parse(String url) {
         recordsBefore = OrderDb.orders.size();
         try {
             File xmlFile = new File(url);
@@ -42,11 +42,13 @@ public class XMLParser {
             }
             recordsAfter = OrderDb.orders.size();
             writeMessage();
+            return true;
         } catch (FileNotFoundException e) {
-            System.err.println("Błędny plik");
+            System.err.println("System nie może odnaleźć określonej ścieżki");
+            return false;
         } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
-            System.exit(1);
+            return false;
         }
     }
 
