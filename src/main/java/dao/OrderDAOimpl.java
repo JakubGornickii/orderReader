@@ -34,7 +34,7 @@ public class OrderDAOimpl implements OrderDAO {
         double tottalPrice = 0;
         for (Order order : OrderDb.orders)
         {
-            tottalPrice+=order.getPrice();
+            tottalPrice+=order.getPrice()*order.getQuantity();
         }
         return tottalPrice;
     }
@@ -44,7 +44,7 @@ public class OrderDAOimpl implements OrderDAO {
         for (Order order : OrderDb.orders)
         {
             if (order.getClientId().equals(clientId)){
-                tottalPrice+=order.getPrice();
+                tottalPrice+=order.getPrice()*order.getQuantity();
             }
         }
         return tottalPrice;
@@ -70,7 +70,7 @@ public class OrderDAOimpl implements OrderDAO {
         double averagePrice = 0;
         for (Order order : OrderDb.orders)
         {
-            price+=order.getPrice();
+            price+=order.getPrice()*order.getQuantity();
         }
         averagePrice = price/OrderDb.orders.size();
         return averagePrice;
@@ -83,7 +83,7 @@ public class OrderDAOimpl implements OrderDAO {
         for (Order order : OrderDb.orders)
         {
             if (order.getClientId().equals(clientId)){
-            price+=order.getPrice();
+            price+=order.getPrice()*order.getQuantity();
             counter++;
         }}
         averagePrice = price/counter;

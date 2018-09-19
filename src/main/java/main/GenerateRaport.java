@@ -40,9 +40,9 @@ public class GenerateRaport {
             while (fileExist) {
                 System.out.println("Proszę wpisać nazwę pliku (bez rozszerzenia)");
                 fileName = scanner.nextLine();
-                File idea = new File(fileName + ".txt");
+                File idea = new File("../"+fileName + ".txt");
                 if (!idea.exists()) {
-                    writer = new FileWriter(fileName+".txt");
+                    writer = new FileWriter("../"+fileName+".txt");
                     fileExist = false;
                 } else
                     System.out.println("plik istnieje");

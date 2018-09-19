@@ -48,6 +48,7 @@ class Main {
                 }
             } else System.out.println("błędne rozszerzenie");
         }
+        Console.clear();
     }
 
     private boolean nextFile() {
@@ -91,6 +92,7 @@ class Main {
                         if (isEmpty(case1))
                             break;
                         String data1 = "łączna ilość zamówień: " + case1;
+                        Console.clear();
                         raports(data1);
                         break;
                     case 2:
