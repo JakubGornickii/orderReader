@@ -3,14 +3,6 @@ package main;
 public abstract class Console {
 
     public static void clear() {
-        try {
-            final String os = System.getProperty("os.name");
-            if (os.contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
-            } else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (final Exception ignored) {
-        }
+        System.out.println(new String(new char[50]).replace("\0", "\r\n"));
     }
 }
