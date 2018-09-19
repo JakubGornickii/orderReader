@@ -18,8 +18,8 @@ class Main {
     private void init() {
         CSVParser CSVParser = new CSVParser();
         XMLParser XMLParser = new XMLParser();
-        CSVParser.parse("src/main/resources/orders.csv");
-        XMLParser.parse("src/main/resources/orders.xml");
+        CSVParser.parse("orders.csv");
+        XMLParser.parse("orders.xml");
     }
 
     void run() {
