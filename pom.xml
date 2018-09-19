@@ -17,15 +17,17 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>main.Run</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+            <archive>
+                <manifest>
+                    <addClasspath>true</addClasspath>
+                    <mainClass>main.Run</mainClass>
+                </manifest>
+            </archive>
+        </configuration></plugin>
         </plugins>
     </build>
 
