@@ -3,6 +3,7 @@ package paser;
 import dao.OrderDAO;
 import dao.OrderDAOimpl;
 import db.OrderDb;
+import main.Console;
 import model.Order;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,16 +36,17 @@ public class XMLParser {
             NodeList request = doc.getElementsByTagName("request");
             for (int i = 0; i < request.getLength(); i++) {
                 Element element = (Element) request.item(i);
-                Order order = checkAndGetOrder(element);
+                Order order = checkAndGetOrder(element,i);
                 if (order != null) {
                     orderDAO.addOrder(order);
                 }
             }
             recordsAfter = OrderDb.orders.size();
-            writeMessage();
+            dataValidation.writeMessage(type, recordsAfter-recordsBefore);
             return true;
         } catch (FileNotFoundException e) {
             System.err.println("System nie może odnaleźć określonej ścieżki");
+            Console.pressEnter();
             return false;
         } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -52,7 +54,7 @@ public class XMLParser {
         }
     }
 
-    private Order checkAndGetOrder(Element element) {
+    private Order checkAndGetOrder(Element element,int line) {
         try {
             String clientId = element.getElementsByTagName("clientId").item(0).getTextContent();
             String requestId = element.getElementsByTagName("requestId").item(0).getTextContent();
@@ -60,25 +62,21 @@ public class XMLParser {
             String quantity = element.getElementsByTagName("quantity").item(0).getTextContent();
             String price = element.getElementsByTagName("price").item(0).getTextContent();
 
-            if  (!(dataValidation.validateByClientId(clientId,type) &&
-                 dataValidation.validateByRequestId(requestId,type) &&
-                 dataValidation.validateByName(name,type) &&
-                 dataValidation.validateByQuantity(quantity,type) &&
-                 dataValidation.validateByPrice(price,type))){
+            if  (!(dataValidation.validateByClientId(clientId,type,line) &&
+                 dataValidation.validateByRequestId(requestId,type,line) &&
+                 dataValidation.validateByName(name,type,line) &&
+                 dataValidation.validateByQuantity(quantity,type,line) &&
+                 dataValidation.validateByPrice(price,type,line))){
                 return null;
             }
             return new Order(clientId, Long.parseLong(requestId), name, Integer.parseInt(quantity), Double.parseDouble(price));
         }catch (NullPointerException e){
-            dataValidation.printError("x", type);
+            dataValidation.printError("x", type,line);
             return null;
         }
 
     }
 
-    private void writeMessage() {
-        int recordsSaved = recordsAfter - recordsBefore;
-        if (recordsSaved > 0)
-            System.out.println("Wczytano i zapisano " + recordsSaved + " zamówień do bazy danych z pliku XML");
-    }
+
 }
 

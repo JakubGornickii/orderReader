@@ -20,7 +20,12 @@ class Main {
         CSVParser CSVParser = new CSVParser();
         XMLParser XMLParser = new XMLParser();
         while (next) {
-            System.out.println("Wprowadz nazwę pliku");
+            Console.clear();
+            System.out.println("Żeby wczytać dane z zamówieniami umieść plik w folderze OrderReader");
+            System.out.println("i wpisz nazwę pliku z rozszerzeniem np. orders.xml orders.csv ");
+            System.out.println("Jeśeli plik znajduje się w innej lokalizacji proszę wpisać pełną ścieżke \n");
+            System.out.println("Wpisz nazwę pliku \n");
+
             String url = geturl();
             String add = "../";
             if (url.contains("csv")) {
@@ -35,7 +40,6 @@ class Main {
 
                 }
 
-                continue;
             } else if (url.contains("xml")) {
                 if (url.contains("\\")) {
                     if (XMLParser.parse(url)) {
@@ -46,9 +50,11 @@ class Main {
                         next = nextFile();
                     }
                 }
-            } else System.out.println("błędne rozszerzenie");
+            } else {
+                System.out.println("błędne rozszerzenie");
+                Console.pressEnter();
+            }
         }
-        Console.clear();
     }
 
     private boolean nextFile() {
@@ -73,7 +79,7 @@ class Main {
 
         init();
         while (true) {
-            System.out.println();
+            Console.clear();
             System.out.println("Obsługa zamówień menu");
             System.out.println();
             System.out.println("1: Łączna lość zamówień");
@@ -92,7 +98,6 @@ class Main {
                         if (isEmpty(case1))
                             break;
                         String data1 = "łączna ilość zamówień: " + case1;
-                        Console.clear();
                         raports(data1);
                         break;
                     case 2:
@@ -100,7 +105,7 @@ class Main {
                         Integer case2 = orderDAO.findByNumerOfOrdersByClientId(id2);
                         if (isEmpty(case2))
                             break;
-                        String data2 = "Łączna ilość zamówień dla klienta " + id2 + " wynosi: " + case2;
+                        String data2 = "łączna ilość zamówień dla klienta " + id2 + " wynosi: " + case2;
                         raports(data2);
                         break;
                     case 3:
@@ -129,7 +134,7 @@ class Main {
                         List<Order> case6 = orderDAO.findAllByClientId(id6);
                         if (isEmpty(case6.size()))
                             break;
-                        String data6 = "Lista wszystkich zamówień klienta " + id6;
+                        String data6 = "Lista wszystkich zamównień klienta " + id6;
                         raports(data6, case6);
                         break;
                     case 7:
@@ -147,39 +152,45 @@ class Main {
                         raports(data8);
                         break;
                     case 9:
+                        Console.clear();
+                        System.out.println("Zakończono program");
                         System.exit(1);
                         break;
                     default:
                         System.out.println("Proszę wybrać poprawną opcje od 1-9");
+                        Console.pressEnter();
                 }
             } catch (Exception e) {
                 System.out.println("Proszę wybrać poprawną opcje od 1-9");
-                scanner.nextLine();
+                Console.pressEnter();
             }
         }
     }
 
     private void raports(String data) {
+        Console.clear();
         check = formatAsk();
         if (check == null) {
-            return;
+            generateRaport.saveCsv(data);
         } else if (check) {
             generateRaport.printOnScreen(data);
-        } else generateRaport.saveCsv(data);
+        } else generateRaport.saveTxt(data);
     }
 
     private void raports(String data, List<Order> orders) {
+        Console.clear();
         check = formatAsk();
         if (check == null) {
-            return;
+            generateRaport.saveCsv(data,orders);
         } else if (check) {
             generateRaport.printOnScreen(data, orders);
-        } else generateRaport.saveCsv(data, orders);
+        } else generateRaport.saveTxt(data, orders);
     }
 
     private boolean isEmpty(int order) {
         if (order == 0) {
             System.out.println("Brak danych do wyświetlena na dane zapytanie");
+            Console.pressEnter();
             return true;
         } else
             return false;
@@ -187,10 +198,11 @@ class Main {
 
     private Boolean formatAsk() {
         while (true) {
+            System.out.println();
             System.out.println("Co zrobić ?");
             System.out.println("1: Wyświetlić na ekranie");
-            System.out.println("2: Zapisać do pliku CSV");
-            System.out.println("3: Powrót do menu");
+            System.out.println("2: Zapisać do pliku TXT");
+            System.out.println("3: Zapisać do pliku CSV");
             try {
                 switch (scanner.nextInt()) {
                     case 1:
@@ -198,12 +210,15 @@ class Main {
                     case 2:
                         return false;
                     case 3:
+                        Console.clear();
                         return null;
                     default:
                         System.out.println("Proszę wybrać poprawną opcje od 1-3");
+                        Console.pressEnter();
                 }
             } catch (Exception e) {
                 System.out.println("Proszę wybrać poprawną opcje od 1-3");
+                Console.pressEnter();
                 scanner.nextLine();
 
             }
@@ -211,15 +226,18 @@ class Main {
     }
 
     private String read() {
-        Boolean isCorrect = true;
+        Boolean loop = true;
         String id = "";
-        System.out.println("Proszę wpisać identyfikator klienta");
-        while (isCorrect) {
-            id = scanner.next();
-            if (id.length() <= 6 && !id.contains(" ")) {
-                isCorrect = false;
+        while (loop) {
+            Console.clear();
+            System.out.println("\nProszę wpisać identyfikator klienta\n");
+            scanner.nextLine();
+            id = scanner.nextLine();
+            if (id.length() > 6 || id.contains(" ")) {
+                System.out.println("Błędny identyfikator");
+                Console.pressEnter();
             } else {
-                System.out.println("Błędny identyfikator spróbuj ponownie");
+                loop = false;
             }
 
         }

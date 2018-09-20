@@ -3,6 +3,7 @@ package paser;
 import dao.OrderDAO;
 import dao.OrderDAOimpl;
 import db.OrderDb;
+import main.Console;
 import model.Order;
 
 import java.io.*;
@@ -15,6 +16,7 @@ public class CSVParser {
     private int recordsAfter;
     private DataValidation dataValidation = new DataValidation();
     private String type = "CSV";
+    private int lineCounter;
 
     public boolean parse(String url) {
         String[] columnOrder = new String[5];
@@ -22,7 +24,7 @@ public class CSVParser {
         boolean firstLine = true;
         String line = "";
         String cvsSplitBy = ",";
-
+lineCounter =0;
         recordsBefore = OrderDb.orders.size();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(url), "UTF-8"));
@@ -32,30 +34,27 @@ public class CSVParser {
                     firstLine = false;
                     if (!checkFirstLine(columnOrder)) {
                         System.out.println("Błedne dane w pierwszej lini pliku CSV");
-                        System.exit(1);
+                        Console.pressEnter();
                     }
+
                     continue;
                 }
+                lineCounter++;
                 orders = line.split(cvsSplitBy);
                 if (checkLine(columnOrder, orders))
                     generateAndSaveOrder(columnOrder, orders);
             }
             recordsAfter = OrderDb.orders.size();
-            writeMessage();
+            dataValidation.writeMessage(type, recordsAfter - recordsBefore);
             return true;
         } catch (FileNotFoundException e) {
             System.err.println("System nie może odnaleźć określonej ścieżki");
+            Console.pressEnter();
             return false;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-    }
-
-    private void writeMessage() {
-        int recordsSaved = recordsAfter - recordsBefore;
-        if (recordsSaved > 0)
-            System.out.println("Wczytano i zapisano " + recordsSaved + " zamówień do bazy danych z pliku CSV");
     }
 
     private boolean checkFirstLine(String[] columnOrder) {
@@ -72,31 +71,31 @@ public class CSVParser {
 
         for (int i = 0; i < columnOrder.length; i++) {
             if (orders.length != 5) {
-                dataValidation.printError("x", type);
+                dataValidation.printError("x", type, lineCounter);
                 return false;
             }
             if (columnOrder[i].equals("Client_Id")) {
-                if (!dataValidation.validateByClientId(orders[i], type)) {
+                if (!dataValidation.validateByClientId(orders[i], type, lineCounter)) {
                     return false;
                 }
             }
             if (columnOrder[i].equals("Request_id")) {
-                if (!dataValidation.validateByRequestId(orders[i], type)) {
+                if (!dataValidation.validateByRequestId(orders[i], type, lineCounter)) {
                     return false;
                 }
             }
             if (columnOrder[i].equals("Name")) {
-                if (!dataValidation.validateByName(orders[i], type)) {
+                if (!dataValidation.validateByName(orders[i], type, lineCounter)) {
                     return false;
                 }
             }
             if (columnOrder[i].equals("Quantity")) {
-                if (!dataValidation.validateByQuantity(orders[i], type)) {
+                if (!dataValidation.validateByQuantity(orders[i], type, lineCounter)) {
                     return false;
                 }
             }
             if (columnOrder[i].equals("Price")) {
-                if (!dataValidation.validateByPrice(orders[i], type)) {
+                if (!dataValidation.validateByPrice(orders[i], type, lineCounter)) {
                     return false;
                 }
             }
