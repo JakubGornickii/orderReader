@@ -9,22 +9,74 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * This class generate reports and print them on screen or save to csv,xml file
+ */
 public class GenerateRaport {
-
-
+    /**
+     * This method is used for generate and print reports on screen
+     *
+     * @param data String to print on screen
+     */
     void printOnScreen(String data) {
         print(generateTxt(null, Collections.singletonList(data)));
     }
 
+    /**
+     * This method is used for generate and print reports on screen
+     *
+     * @param data   String to print on screen
+     * @param orders list of orders from database
+     */
     void printOnScreen(String data, List<Order> orders) {
         List<String> orders1 = ordersToStringList(orders);
         print(generateTxt(data, orders1));
     }
 
+    /**
+     * This method is used for generate and save reports to csv file
+     *
+     * @param data String with data to save
+     */
     void saveCsv(String data) {
-        save(generateCsv(data),"csv");
+        save(generateCsv(data), "csv");
     }
 
+    /**
+     * This method is used for generate and save reports to csv file
+     *
+     * @param orders list of orders from database
+     */
+    void saveCsv(List<Order> orders) {
+        save(generateCsv(orders), "csv");
+    }
+
+    /**
+     * This method is used for generate and save reports to txt file
+     *
+     * @param data String with data to save
+     */
+    void saveTxt(String data) {
+        save(generateTxt(null, Collections.singletonList(data)), "txt");
+    }
+
+    /**
+     * This method is used for generate and save reports to txt file
+     *
+     * @param data   String with data to save
+     * @param orders list of orders from database
+     */
+    void saveTxt(String data, List<Order> orders) {
+        List<String> orders1 = ordersToStringList(orders);
+        save(generateTxt(data, orders1), "txt");
+    }
+
+    /**
+     * This method is generate list in csv format from String
+     *
+     * @param data String to print on screen
+     * @return String LinkedList with data in csv format
+     */
     private List<String> generateCsv(String data) {
         List<String> oList = new LinkedList<>();
         String dataEN = "";
@@ -57,11 +109,13 @@ public class GenerateRaport {
         return oList;
     }
 
-    void saveCsv(String data, List<Order> orders) {
-        save(generateCsv(data, orders),"csv");
-    }
-
-    private List<String> generateCsv(String data, List<Order> orders) {
+    /**
+     * This method is generate list in csv format from list of Orders
+     *
+     * @param orders LinkedList with raw data
+     * @return String LinkedList with data in csv format
+     */
+    private List<String> generateCsv(List<Order> orders) {
         List<String> oList = new LinkedList<>();
         oList.add("Client_Id,Request_id,Name,Quantity,Price");
         for (Order o : orders) {
@@ -76,16 +130,11 @@ public class GenerateRaport {
 
     }
 
-
-    void saveTxt(String data) {
-        save(generateTxt(null, Collections.singletonList(data)),"txt");
-    }
-
-    void saveTxt(String data, List<Order> orders) {
-        List<String> orders1 = ordersToStringList(orders);
-        save(generateTxt(data, orders1),"txt");
-    }
-
+    /**
+     * This method is used to save file on disk with xml or csv format
+     * @param format String with extension of file xml or csv
+     * @param generate list of String with formatted data to save
+     */
     private void save(List<String> generate, String format) {
         boolean fileExist = true;
         Scanner scanner = new Scanner(System.in);
@@ -97,9 +146,9 @@ public class GenerateRaport {
                 Console.clear();
                 System.out.println("Proszę wpisać nazwę pliku (bez rozszerzenia)");
                 fileName = scanner.next();
-                File idea = new File("../" + fileName + "."+format);
+                File idea = new File("../" + fileName + "." + format);
                 if (!idea.exists()) {
-                    writer = new FileWriter("../" + fileName + "."+format);
+                    writer = new FileWriter("../" + fileName + "." + format);
                     fileExist = false;
                 } else {
                     System.out.println("plik istnieje");
@@ -111,21 +160,27 @@ public class GenerateRaport {
                 writer.write("\n");
             }
             writer.close();
-            System.out.println("zapisano plik " + fileName + "."+format);
+            System.out.println("zapisano plik " + fileName + "." + format);
             Console.pressEnter();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    private List<String> generateTxt(String d, List<String> data) {
+    /**
+     * This method is used for generate LinkedList of data
+     * with can by printed on screen on saved in txt format
+     * @param data String with data to save
+     * @param orders list of orders from database
+     * @return LinkedList of formatted data
+     */
+    private List<String> generateTxt(String data, List<String> orders) {
         StringBuilder s = new StringBuilder();
         List<String> raport = new LinkedList<>();
         int sizeX;
         String firstLine = "Raport wygenerowano: " + getDate();
         sizeX = firstLine.length();
-        for (String st : data) {
+        for (String st : orders) {
             if (st.length() > sizeX) {
                 sizeX = st.length();
             }
@@ -138,11 +193,11 @@ public class GenerateRaport {
         s.append("#");
         raport.add(s.toString());
         raport.add(generateLine(sizeX, true));
-        if (d != null) {
+        if (data != null) {
             s.setLength(0);
             s.append("#");
-            s.append(d);
-            space = sizeX - d.length() - 2;
+            s.append(data);
+            space = sizeX - data.length() - 2;
             s.append(addSpace(space));
             s.append("#");
             raport.add(s.toString());
@@ -150,10 +205,10 @@ public class GenerateRaport {
         }
 
 
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < orders.size(); i++) {
             s.setLength(0);
-            s.append("#" + data.get(i));
-            space = sizeX - data.get(i).length() - 2;
+            s.append("#" + orders.get(i));
+            space = sizeX - orders.get(i).length() - 2;
             s.append(addSpace(space));
             s.append("#");
             raport.add(s.toString());
@@ -161,7 +216,12 @@ public class GenerateRaport {
         raport.add(generateLine(sizeX, false));
         return raport;
     }
-
+    /**
+     * This method generated lines for reports
+     * @param sizeX line width
+     * @param line boolean to choose which line generate
+     * @return String with generated line
+     */
     private String generateLine(int sizeX, boolean line) {
         StringBuilder s = new StringBuilder();
         if (line) {
@@ -179,13 +239,20 @@ public class GenerateRaport {
         return s.toString();
     }
 
-    //do tąd
+    /**
+     * This method get actual data and time from system
+     * @return String with generated date and time
+     */
     private String getDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
     }
-
+    /**
+     * This method generated LinkedList od String from LinkedList of Orders
+     * @param orders LinkedList with Orders from database
+     * @return LinkedList of String with raw data
+     */
     private List<String> ordersToStringList(List<Order> orders) {
         int addClientId = 0;
         int addRequestId;
@@ -238,7 +305,11 @@ public class GenerateRaport {
         return orders1;
     }
 
-
+    /**
+     * This method returning string with spaces
+     * @param howMany int with present how many spaces add to String
+     * @return generated String with spaces
+     */
     private String addSpace(int howMany) {
         StringBuilder s = new StringBuilder();
         if (howMany < 0)
@@ -247,7 +318,20 @@ public class GenerateRaport {
             s.append(" ");
         return s.toString();
     }
-
+    /**
+     * This method building String with is one line from report
+     * @param clientId raw data from database object Order
+     * @param requestId raw data from database object Order
+     * @param name raw data from database object Order
+     * @param quantity raw data from database object Order
+     * @param price raw data from database object Order
+     * @param addClientId int with data how many spaces must by added
+     * @param addRequestId int with data how many spaces must by added
+     * @param addName int with data how many spaces must by added
+     * @param addQuantity int with data how many spaces must by added
+     * @param addPrice int with data how many spaces must by added
+     * @return String with generated line
+     */
     private String build(String clientId, String requestId, String name, String quantity,
                          String price, int addClientId, int addRequestId, int addName, int addQuantity, int addPrice) {
         char line = '\u2502';
@@ -268,7 +352,10 @@ public class GenerateRaport {
         s.append(addSpace(addPrice));
         return s.toString();
     }
-
+    /**
+     * This method print rapport in console
+     * @param orders formatted data ready to print on screen
+     */
     private void print(List<String> orders) {
         Console.clear();
         orders.forEach(System.out::println);

@@ -7,14 +7,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
-
+/** This class operate on in memory database on Order object */
 public class OrderDAOimpl implements OrderDAO {
     public void addOrder(Order order) {
 
 
         OrderDb.orders.add(order);
     }
-
     public int findByNumberOfOrders() {
         return OrderDb.orders.size();
     }
@@ -34,6 +33,7 @@ public class OrderDAOimpl implements OrderDAO {
         for (Order order : OrderDb.orders) {
             tottalPrice += order.getPrice() * order.getQuantity();
         }
+        tottalPrice = BigDecimal.valueOf(tottalPrice).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
         return tottalPrice;
     }
 
@@ -44,6 +44,7 @@ public class OrderDAOimpl implements OrderDAO {
                 tottalPrice += order.getPrice() * order.getQuantity();
             }
         }
+        tottalPrice = BigDecimal.valueOf(tottalPrice).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
         return tottalPrice;
     }
 

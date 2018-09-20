@@ -10,6 +10,10 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class read csv orders files, validate data
+ * and save them to database
+ */
 public class CSVParser {
 
     private int recordsBefore;
@@ -18,13 +22,21 @@ public class CSVParser {
     private String type = "CSV";
     private int lineCounter;
 
+    /**
+     * Main method in this class use for read file,
+     * swap for Order model and save
+     *
+     * @param url directory to file
+     * @return true when successfully parse file and false when
+     * are some errors with file
+     */
     public boolean parse(String url) {
         String[] columnOrder = new String[5];
         String[] orders;
         boolean firstLine = true;
         String line = "";
         String cvsSplitBy = ",";
-lineCounter =0;
+        lineCounter = 0;
         recordsBefore = OrderDb.orders.size();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(url), "UTF-8"));
@@ -57,6 +69,12 @@ lineCounter =0;
         }
     }
 
+    /**
+     * This method check if headline csv file is correct
+     *
+     * @param columnOrder raw data flom file
+     * @return true of false when headline are correct
+     */
     private boolean checkFirstLine(String[] columnOrder) {
         List<String> items = Arrays.asList(columnOrder);
         return items.contains("Client_Id") &&
@@ -67,6 +85,15 @@ lineCounter =0;
                 (items.size() == 5);
     }
 
+    /**
+     * This method validate data from file read first line sequence
+     * and set correct data to correct heading
+     *
+     * @param columnOrder first line of csv file already checked with
+     *                    checkFirstLine method.
+     * @param orders      raw line from csv file.
+     * @return true or false if input data are correct or not
+     */
     private boolean checkLine(String[] columnOrder, String[] orders) {
 
         for (int i = 0; i < columnOrder.length; i++) {
@@ -103,7 +130,15 @@ lineCounter =0;
         return true;
     }
 
-
+    /**
+     * This method read first line sequence and set correct data
+     * to correct heading, create Order and save to database using
+     * OrderDAO
+     *
+     * @param columnOrder first line of csv file already checked with
+     *                    checkFirstLine method.
+     * @param orders      line of data alredy checked with checkLine method
+     */
     private void generateAndSaveOrder(String[] columnOrder, String[] orders) {
         Order order = new Order();
         OrderDAO orderDAO = new OrderDAOimpl();

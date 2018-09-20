@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * This class is a standard model object
+ */
 public class Order {
     private String clientId;
     private Long requestId;

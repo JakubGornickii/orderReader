@@ -15,7 +15,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+/**
+ * This class read xml orders files, validate data
+ * and save them to database
+ */
 public class XMLParser {
 
 
@@ -25,6 +28,14 @@ public class XMLParser {
     private OrderDAO orderDAO = new OrderDAOimpl();
     private DataValidation dataValidation = new DataValidation();
 
+    /**
+     * Main method in this class use for read file,
+     * swap for Order model and save
+     *
+     * @param url directory to file
+     * @return true when successfully parse file and false when
+     * are some errors with file
+     */
     public boolean parse(String url) {
         recordsBefore = OrderDb.orders.size();
         try {
@@ -53,7 +64,14 @@ public class XMLParser {
             return false;
         }
     }
-
+    /**
+     * This method validate element from file and create Order when
+     * data are correct
+     *
+     * @param element element read from file xml
+     * @param line int with line number in xml file
+     * @return object Order
+     */
     private Order checkAndGetOrder(Element element,int line) {
         try {
             String clientId = element.getElementsByTagName("clientId").item(0).getTextContent();

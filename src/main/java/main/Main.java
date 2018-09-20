@@ -3,18 +3,24 @@ package main;
 import dao.OrderDAO;
 import dao.OrderDAOimpl;
 import model.Order;
-import paser.XMLParser;
 import paser.CSVParser;
+import paser.XMLParser;
 
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * This is true main class of this application
+ */
 class Main {
     private GenerateRaport generateRaport = new GenerateRaport();
     private Scanner scanner = new Scanner(System.in);
     private OrderDAO orderDAO = new OrderDAOimpl();
     private Boolean check;
 
+    /**
+     * This method is run once when application start, to load orders files
+     */
     private void init() {
         boolean next = true;
         CSVParser CSVParser = new CSVParser();
@@ -57,6 +63,9 @@ class Main {
         }
     }
 
+    /**
+     * This method is asking user to load next order file when one is loaded
+     */
     private boolean nextFile() {
         while (true) {
             System.out.println("Wczytać kolejny plik t/n");
@@ -70,10 +79,16 @@ class Main {
         }
     }
 
+    /**
+     * This method read url from user
+     */
     private String geturl() {
         return scanner.next();
     }
 
+    /**
+     * This method is contains application loop with main menu
+     */
     void run() {
 
 
@@ -98,7 +113,7 @@ class Main {
                         if (isEmpty(case1))
                             break;
                         String data1 = "łączna ilość zamówień: " + case1;
-                        raports(data1);
+                        reports(data1);
                         break;
                     case 2:
                         String id2 = read();
@@ -106,13 +121,13 @@ class Main {
                         if (isEmpty(case2))
                             break;
                         String data2 = "łączna ilość zamówień dla klienta " + id2 + " wynosi: " + case2;
-                        raports(data2);
+                        reports(data2);
                         break;
                     case 3:
                         Double case3 = orderDAO.findTottalPrice();
                         isEmpty(case3 <= 0 ? 0 : 1);
                         String data3 = "Łączna kwota zamówień: " + case3;
-                        raports(data3);
+                        reports(data3);
                         break;
                     case 4:
                         String id4 = read();
@@ -120,14 +135,14 @@ class Main {
                         if (isEmpty(case4 <= 0 ? 0 : 1))
                             break;
                         String data4 = "Łączna kwota zamówień dla klienta " + id4 + " wynosi: " + case4;
-                        raports(data4);
+                        reports(data4);
                         break;
                     case 5:
                         List<Order> case5 = orderDAO.findAll();
                         if (isEmpty(case5.size()))
                             break;
                         String data5 = "Lista wszystkich zamównień";
-                        raports(data5, case5);
+                        reports(data5, case5);
                         break;
                     case 6:
                         String id6 = read();
@@ -135,13 +150,13 @@ class Main {
                         if (isEmpty(case6.size()))
                             break;
                         String data6 = "Lista wszystkich zamównień klienta " + id6;
-                        raports(data6, case6);
+                        reports(data6, case6);
                         break;
                     case 7:
                         Double case7 = orderDAO.findByAveragePrice();
                         isEmpty(case7 <= 0 ? 0 : 1);
                         String data7 = "Średnia kwota zamówień: " + case7;
-                        raports(data7);
+                        reports(data7);
                         break;
                     case 8:
                         String id8 = read();
@@ -149,7 +164,7 @@ class Main {
                         if (isEmpty(case8 <= 0 ? 0 : 1))
                             break;
                         String data8 = "Średnia kwota zamówień dla klienta " + id8 + " wynosi: " + case8;
-                        raports(data8);
+                        reports(data8);
                         break;
                     case 9:
                         Console.clear();
@@ -167,7 +182,13 @@ class Main {
         }
     }
 
-    private void raports(String data) {
+    /**
+     * This method chooses what to do with report (print,save)
+     *
+     * @param data String with data from database with will by
+     *             forwarded to correct method
+     */
+    private void reports(String data) {
         Console.clear();
         check = formatAsk();
         if (check == null) {
@@ -177,16 +198,30 @@ class Main {
         } else generateRaport.saveTxt(data);
     }
 
-    private void raports(String data, List<Order> orders) {
+    /**
+     * This method chooses what to do with report (print,save)
+     *
+     * @param data   String with data from database with will by
+     *               forwarded to correct method
+     * @param orders LinkedList with orders from database with
+     *               will by forwarded to correct method
+     */
+    private void reports(String data, List<Order> orders) {
         Console.clear();
         check = formatAsk();
         if (check == null) {
-            generateRaport.saveCsv(data,orders);
+            generateRaport.saveCsv(orders);
         } else if (check) {
             generateRaport.printOnScreen(data, orders);
         } else generateRaport.saveTxt(data, orders);
     }
 
+    /**
+     * This method check if it's not 0. if is 0 print on screen message
+     *
+     * @param order int to check
+     * @return true of false when input are 0 or not
+     */
     private boolean isEmpty(int order) {
         if (order == 0) {
             System.out.println("Brak danych do wyświetlena na dane zapytanie");
@@ -196,6 +231,13 @@ class Main {
             return false;
     }
 
+    /**
+     * This method is contains sub menu with options
+     * what to do with reports
+     *
+     * @return true false of null with are three options
+     * in menu
+     */
     private Boolean formatAsk() {
         while (true) {
             System.out.println();
@@ -225,6 +267,12 @@ class Main {
         }
     }
 
+    /**
+     * This method read Client Id from user tosearch correct
+     * data in database and check if Client Id is correct
+     *
+     * @return String with correct Client Id
+     */
     private String read() {
         Boolean loop = true;
         String id = "";

@@ -1,13 +1,14 @@
 <requests>
     <request>
-        <requestId>201</requestId>
+	        <clientId>1</clientId>
+        <requestId>200</requestId>
         <name>Bułka</name>
         <quantity>1</quantity>
         <price>10.00</price>
     </request>
     <request>
         <clientId>1</clientId>
-
+        <requestId>201</requestId>
         <name>Chleb</name>
         <quantity>2</quantity>
         <price>15.00</price>
@@ -16,8 +17,8 @@
         <clientId>1</clientId>
         <requestId>223</requestId>
         <name>Chleb</name>
-
-        <price>15.00</price>
+<quantity>1</quantity>
+        <price>15.0a0</price>
     </request>
     <request>
         <clientId>2</clientId>
@@ -48,7 +49,7 @@
         <price>15.00</price>
     </request>
     <request>
-        <clientId>2</clientId>
+        <clientId>2123333</clientId>
         <requestId>156</requestId>
         <name>Chleb</name>
         <quantity>1</quantity>
@@ -99,7 +100,7 @@
     <request>
         <clientId>1</clientId>
         <requestId>762</requestId>
-        <name>Chleb</name>
+
         <quantity>5</quantity>
         <price>15.00</price>
     </request>
@@ -167,7 +168,7 @@
         <price>10.00</price>
     </request>
 	    <request>
-        <clientId>1</clientId>
+
         <requestId>1</requestId>
         <name>Bułka</name>
         <quantity>1</quantity>
@@ -185,6 +186,34 @@
         <requestId>2</requestId>
         <name>Chleb</name>
         <quantity>5</quantity>
+        <price>15.00</price>
+    </request>
+    <request>
+        <clientId>2</clientId>
+        <requestId>1</requestId>
+        <name>Chleb</name>
+        <quantity>1</quantity>
+        <price>10.00</price>
+    </request>
+	    <request>
+        <clientId>1</clientId>
+        <requestId>1</requestId>
+        <name>Bułka</name>
+        <quantity>1</quantity>
+        <price>10.00</price>
+    </request>
+    <request>
+        <clientId>1</clientId>
+        <requestId>2</requestId>
+        <name>Chleb</name>
+        <quantity>2</quantity>
+        <price>15.00</price>
+    </request>
+    <request>
+        <clientId>1</clientId>
+        <requestId>2</requestId>
+        <name>Chleb</name>
+
         <price>15.00</price>
     </request>
     <request>
@@ -241,35 +270,7 @@
         <requestId>2</requestId>
         <name>Chleb</name>
         <quantity>5</quantity>
-        <price>15.00</price>
-    </request>
-    <request>
-        <clientId>2</clientId>
-        <requestId>1</requestId>
-        <name>Chleb</name>
-        <quantity>1</quantity>
-        <price>10.00</price>
-    </request>
-	    <request>
-        <clientId>1</clientId>
-        <requestId>1</requestId>
-        <name>Bułka</name>
-        <quantity>1</quantity>
-        <price>10.00</price>
-    </request>
-    <request>
-        <clientId>1</clientId>
-        <requestId>2</requestId>
-        <name>Chleb</name>
-        <quantity>2</quantity>
-        <price>15.00</price>
-    </request>
-    <request>
-        <clientId>1</clientId>
-        <requestId>2</requestId>
-        <name>Chleb</name>
-        <quantity>5</quantity>
-        <price>15.00</price>
+        <price>15.a00</price>
     </request>
     <request>
         <clientId>2</clientId>

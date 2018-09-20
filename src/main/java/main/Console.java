@@ -2,9 +2,12 @@ package main;
 
 import java.io.IOException;
 import java.util.Scanner;
-
+/**
+ * This abstract class is use for clean console, print logo
+ * and read enter key when necessary
+ */
 public abstract class Console {
-
+    /** This method clear console*/
     public static void clear() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
@@ -17,7 +20,7 @@ public abstract class Console {
         }
         printLogo();
     }
-
+    /** This method wait for user to press enter*/
     public static void pressEnter() {
 
         Scanner scanner = new Scanner(System.in);
@@ -29,7 +32,7 @@ public abstract class Console {
         }if (System.getProperty("os.name").contains("Windows")) {
         scanner.nextLine();}
     }
-
+    /** This method print logo on the screen */
     private static void printLogo() {
         System.out.println(" _____            _              ______                   _             \n" +
                 "|  _  |          | |             | ___ \\                 | |            \n" +

@@ -3,7 +3,10 @@ package dao;
 import model.Order;
 
 import java.util.List;
-
+/**
+ * This interface it contains all methods for
+ * operate on in memory database on Order object
+ */
 public interface OrderDAO {
     public void addOrder(Order order);
     public int findByNumberOfOrders();
