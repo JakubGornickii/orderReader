@@ -19,14 +19,15 @@ public abstract class Console {
     }
 
     public static void pressEnter() {
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nWciśnij enter żeby kontynułować...");
         try {
             System.in.read();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        scanner.nextLine();
+        }if (System.getProperty("os.name").contains("Windows")) {
+        scanner.nextLine();}
     }
 
     private static void printLogo() {

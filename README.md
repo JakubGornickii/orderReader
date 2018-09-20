@@ -6,14 +6,17 @@ Linux build guide:
 
 git clone https://github.com/JakubGornickii/orderReader.git
 cd orderReader
-chmod 777 run.sh build.sh
-./build.sh
-./run.sh
+chmod 777 run.sh compile.sh
+./compile.sh &&./run.sh
+
+Building on Windows prerequisites:
+
+-Maven
+-Java 8
 
 Windows build quide:
 
-build.bat
-run.bat
+build.bat && run.bat
 
 
 Loading orders:
